@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Platform } from 'react-native';
+import { FlatList, StyleSheet, Platform, View } from 'react-native';
 import { useBridgeState } from '../useBridgeState';
 import React from 'react';
 import {
@@ -18,7 +18,27 @@ interface ToolbarProps {
   items?: ToolbarItem[];
 }
 
-export const toolbarStyles = StyleSheet.create({});
+export const toolbarStyles = StyleSheet.create({
+  toolbarContainer: {
+    flexDirection: 'row',
+  },
+  toolbarFlatList: {
+    minWidth: '85%',
+    maxWidth: '85%',
+  },
+  toolbarCloseKeyboard: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: '15%',
+    maxWidth: '15%',
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderLeftWidth: 0.5,
+    borderColor: '#DEE0E3',
+  },
+});
 
 export enum ToolbarContext {
   Main,
@@ -54,7 +74,9 @@ export function Toolbar({
         return (
           <WebToolbar
             items={
-              toolbarContext === ToolbarContext.Main ? items : HEADING_ITEMS
+              toolbarContext === ToolbarContext.Main
+                ? items.slice(1)
+                : HEADING_ITEMS
             }
             args={args}
             editor={editor}
@@ -63,17 +85,29 @@ export function Toolbar({
         );
       }
       return (
-        <FlatList
-          data={toolbarContext === ToolbarContext.Main ? items : HEADING_ITEMS}
-          style={[
-            editor.theme.toolbar.toolbarBody,
-            hideToolbar ? editor.theme.toolbar.hidden : undefined,
-          ]}
-          renderItem={({ item }) => {
-            return <ToolbarItemComp {...item} args={args} editor={editor} />;
-          }}
-          horizontal
-        />
+        <View style={toolbarStyles.toolbarContainer}>
+          <FlatList
+            data={
+              toolbarContext === ToolbarContext.Main
+                ? items.slice(1)
+                : HEADING_ITEMS
+            }
+            style={[
+              editor.theme.toolbar.toolbarBody,
+              hideToolbar ? editor.theme.toolbar.hidden : undefined,
+              toolbarStyles.toolbarFlatList,
+            ]}
+            renderItem={({ item }) => {
+              return <ToolbarItemComp {...item} args={args} editor={editor} />;
+            }}
+            horizontal
+          />
+          {items[0] && (
+            <View style={toolbarStyles.toolbarCloseKeyboard}>
+              <ToolbarItemComp {...items[0]} args={args} editor={editor} />
+            </View>
+          )}
+        </View>
       );
     case ToolbarContext.Link:
       return (
