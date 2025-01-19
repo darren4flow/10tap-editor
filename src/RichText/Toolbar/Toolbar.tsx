@@ -103,7 +103,12 @@ export function Toolbar({
             horizontal
           />
           {items[0] && (
-            <View style={toolbarStyles.toolbarCloseKeyboard}>
+            <View
+              style={[
+                toolbarStyles.toolbarCloseKeyboard,
+                hideToolbar ? editor.theme.toolbar.hidden : undefined,
+              ]}
+            >
               <ToolbarItemComp {...items[0]} args={args} editor={editor} />
             </View>
           )}
