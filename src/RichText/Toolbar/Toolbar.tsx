@@ -102,7 +102,7 @@ export function Toolbar({
             }}
             horizontal
           />
-          {items[0] && (
+          {items[0] && !hideToolbar && (
             <View
               style={[
                 toolbarStyles.toolbarCloseKeyboard,
