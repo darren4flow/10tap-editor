@@ -37,6 +37,7 @@ export const toolbarStyles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderLeftWidth: 0.5,
     borderColor: '#DEE0E3',
+    backgroundColor: 'white',
   },
 });
 
